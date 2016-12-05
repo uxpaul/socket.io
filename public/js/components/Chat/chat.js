@@ -26,8 +26,6 @@
                     };
 
                     socket.on('chat message', (msg) => {
-                      debugger
-
                         this.message(msg.content, msg.pseudo)
                     });
 
@@ -35,9 +33,11 @@
 
                 },
                 message(msg, pseudo) {
-                    debugger
-                    this.content = `${msg} ${pseudo}`
-
+                  this.content = {}
+                  this.content.pseudo = pseudo
+                  this.content.msg = msg
+                  this.contenus = []
+                  this.contenus.push(this.content)
                 }
             })
         }]

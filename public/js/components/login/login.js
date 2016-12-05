@@ -5,12 +5,13 @@
         controller: ['$state', function($state) {
             angular.extend(this, {
                 $onInit() {
-
+                  
                     let socket = io();
                     //  let pseudo = prompt('Quel est votre pseudo ?');
                     //  socket.emit('pseudo', pseudo)
 
 
+                    // A la connection
                     socket.on('connect', () => {
                         console.log('Waiting')
 
@@ -21,6 +22,8 @@
                                 password: this.password
                             });
                         }
+
+                        // Si authenticate Fail
                         socket.on('Try again', function() {
                             alert('Wrong pseudo/password ! Start A-G-A-I-N');
                         })
@@ -28,8 +31,8 @@
                         // Si authentifier aller vers chat et passer le pseudo
                         socket.on('authenticated', function(pseudo) {
                             $state.go('app.chat', {
-                                    pseudo: pseudo
-                                })
+                                pseudo: pseudo
+                            })
 
                         });
                     });

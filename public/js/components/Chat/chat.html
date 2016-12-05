@@ -1,6 +1,6 @@
 <div id="connection"> </div>
-<ul id="messages">
-  <li>{{$ctrl.content}}</li>
+<ul id="messages" ng-repeat="contenu in $ctrl.contenus">
+  <li>{{contenu.pseudo}} {{contenu.msg}}</li>
 </ul>
 <form>
     <input id="m" ng-model="$ctrl.envoie" />

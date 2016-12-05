@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
         //Data du client
         var name = data.name;
         var password = data.password;
-        
+
         User.find({
             name: name
         }, function(err, user) {
@@ -92,7 +92,8 @@ io.on('connection', (socket) => {
 
 
     socket.on('chat message', (message) => {
-        message = ent.encode(message);
+         message = ent.encode(message);
+        console.log(message)
         socket.broadcast.emit('chat message', {
             pseudo: socket.user,
             content: message
