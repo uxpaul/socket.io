@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="css/main.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="img/SOCKETIOICON.gif">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
+    <title>Socket.IO chat</title>
+
+</head>
+
+<body>
+    <div id="connection"> </div>
+    <ul id="messages"></ul>
+    <form action="">
+        <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+
+    <ui-view></ui-view>
+</body>
+
+<script src="libs/angular.min.js"></script>
+<script src="libs/angular-ui-router.min.js"></script>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+
+<script src="js/components/login/login.md.js"></script>
+<script src="js/components/login/login.js"></script>
+
+<script src="js/components/home/home.md.js"></script>
+<script src="js/components/home/home.js"></script>
+
+<script src="js/config/config.md.js"></script>
+<script src="js/config/router.js"></script>
+
+<script src="js/app.js"> </script>
+
+</html>

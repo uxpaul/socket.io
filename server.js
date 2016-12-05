@@ -1,7 +1,7 @@
-let app = require('express')(),
-    http = require('http').Server(app),
+let express = require('express'),
+    http = require('http'),
+    app = express(),
     port = process.env.PORT || 3090,
-    io = require('socket.io')(http),
     ent = require('ent'),
     mongoose = require('mongoose'),
     Schema = mongoose.Schema;
@@ -28,12 +28,16 @@ let UserSchema = new Schema({
 
 var User = mongoose.model('User', UserSchema) // Model qui va utiliser le Schema
 
+//
+// app.get('/', function(req, res) {
+//     res.sendFile(__dirname + '/index.html');
+// });
 
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
-});
+app.use(express.static(__dirname + '/public'))
 
 
+let server = http.Server(app)
+let io = require('socket.io')(server)
 
 io.on('connection', (client) => {
     client.emit('an event', {
@@ -47,29 +51,32 @@ io.on('connection', (socket) => {
     socket.on('authenticate', function(data, callback) {
         socket.auth = false;
 
-        //get credentials sent by the client
+        //Data du client
         var name = data.name;
         var password = data.password;
 
-        User.find( {
+        User.find({
             name: name
         }, function(err, user) {
-          user.forEach((element)=>{
-            console.log(element.password)
-            // auth success/failure
-            if (err || password != element.password ) socket.disconnect('unauthorized');
-            else {
-                socket.auth = true;
-                socket.emit('authenticated')
-                console.log("Authenticated socket ", socket.id);
-            }
-          })
+            user.forEach((element) => {
+                console.log(element.password)
+
+                // auth success/failure
+                if (err && !(password === element.password && name === element.name))
+                    socket.emit('Try again');
+                else {
+                    socket.auth = true;
+                    socket.emit('authenticated')
+                    console.log("Authenticated socket ", socket.id);
+                }
+            })
         });
 
         setTimeout(function() {
             //If the socket didn't authenticate, disconnect it
             if (!socket.auth) {
                 console.log("Disconnecting socket ", socket.id);
+                socket.emit('Try again');
                 socket.disconnect('unauthorized');
             }
         }, 1000);
@@ -97,6 +104,6 @@ io.on('connection', (socket) => {
 
 mongoose.connect('mongodb://localhost:27017/express');
 
-http.listen(port, () => {
+server.listen(port, () => {
     console.log('listening on *:3090');
 });

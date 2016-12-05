@@ -1,5 +1,5 @@
 node_modules/
 plugins/
-public/
+
 .DS_Store
 *.log
