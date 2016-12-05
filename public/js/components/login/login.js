@@ -2,64 +2,52 @@
     'use strict'
     app.component('login', {
         templateUrl: 'js/components/login/login.html',
-        controller: ['$state', function( $state) {
+        controller: ['$state', function($state) {
             angular.extend(this, {
                 $onInit() {
 
-                     let socket = io();
+                    let socket = io();
 
                     //  let pseudo = prompt('Quel est votre pseudo ?');
                     //  socket.emit('pseudo', pseudo)
 
-                     socket.on('connect', ()=> {
-                       console.log('Waiting')
-                       this.join = ()=>{
-                         debugger
-                         socket.emit('authenticate', {
-                             name: this.pseudo,
-                             password: this.password
-                         });
-                       }
-                         socket.on('Try again', function() {
-                             prompt('No pseudo ! Start A-G-A-I-N');
-                         })
+                    socket.on('connect', () => {
+                        console.log('Waiting')
 
-                         socket.on('authenticated', function() {
-                             // use the socket
-                             socket.on('pseudo', function(info) {
-                                 document.getElementById('connection').innerHTML = `<h4>  ${info} <h4>`
+                        this.join = () => {
 
-                             })
+                            socket.emit('authenticate', {
+                                name: this.pseudo,
+                                password: this.password
+                            });
+                        }
+                        socket.on('Try again', function() {
+                            alert('Wrong pseudo/password ! Start A-G-A-I-N');
+                        })
 
-                             socket.on('an event', function(test) {
-                                 document.getElementById('connection').innerHTML = `<em>  ${test.data} <em>`
-                             })
+                        socket.on('authenticated', function() {
+                            $state.go('app.chat', {
+                                    pseudo: this.pseudo
+                                })
+                                // use the socket
+                            socket.on('pseudo', function(info) {
+                                this.pseudo = info
 
-                             $('form').submit(function() {
-                                 let msg = document.getElementById('m').value
-                                 socket.emit('chat message', msg);
-                                 message(msg, pseudo)
-                                 document.getElementById('m').value = '';
-                                 return false; // bloque l'envoie du formulaire
-                             });
+                            })
 
-                             socket.on('chat message', function(msg) {
-                                 message(msg.content, msg.pseudo)
-                             });
+                            // Affiche celui qui vient de se copnnecter
+                            socket.on('an event', function(test) {
+                              debugger
+                                this.user = test.data
+                            })
 
 
-
-                         });
-                     });
-
-
-                    // this.join = ()=>{
-                    //   if(this.pseudo)
-                    //   $state.go('app.home', {pseudo: this.pseudo})
-                    // }
+                        });
+                    });
 
 
                 }
+
             })
         }]
     })

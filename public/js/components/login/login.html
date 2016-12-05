@@ -1,6 +1,13 @@
-<div>
-	<input type="text" placeholder="Your pseudo" ng-model="$ctrl.pseudo">
-	<input type="text" placeholder="Password" ng-model="$ctrl.password">
+<div class="container">
+	<div class="row">
+		<form>
+			<h1> Pour Soso </h1>
+			<div class="col col-xs-3" id="login">
+				<input type="text" placeholder="Your pseudo" ng-model="$ctrl.pseudo" required="">
+				<input type="text" placeholder="Password" ng-model="$ctrl.password" required="">
+				<button ng-click="$ctrl.join()">Join</button>
+			</div>
+		</form>
 
-	<button type="submit" ng-click="$ctrl.join()">Join</button>
+	</div>
 </div>

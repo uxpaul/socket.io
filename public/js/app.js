@@ -4,6 +4,7 @@
   'ui.router',
   'app.config',
   'app.login',
-  'app.home'
+  'app.home',
+  'app.chat'
 
 ]))
