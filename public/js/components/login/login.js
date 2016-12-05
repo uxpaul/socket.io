@@ -7,9 +7,9 @@
                 $onInit() {
 
                     let socket = io();
-
                     //  let pseudo = prompt('Quel est votre pseudo ?');
                     //  socket.emit('pseudo', pseudo)
+
 
                     socket.on('connect', () => {
                         console.log('Waiting')
@@ -25,22 +25,11 @@
                             alert('Wrong pseudo/password ! Start A-G-A-I-N');
                         })
 
-                        socket.on('authenticated', function() {
+                        // Si authentifier aller vers chat et passer le pseudo
+                        socket.on('authenticated', function(pseudo) {
                             $state.go('app.chat', {
-                                    pseudo: this.pseudo
+                                    pseudo: pseudo
                                 })
-                                // use the socket
-                            socket.on('pseudo', function(info) {
-                                this.pseudo = info
-
-                            })
-
-                            // Affiche celui qui vient de se copnnecter
-                            socket.on('an event', function(test) {
-                              debugger
-                                this.user = test.data
-                            })
-
 
                         });
                     });

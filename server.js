@@ -54,19 +54,19 @@ io.on('connection', (socket) => {
         //Data du client
         var name = data.name;
         var password = data.password;
-
+        
         User.find({
             name: name
         }, function(err, user) {
             user.forEach((element) => {
-                console.log(element.password)
+                console.log(element.name)
 
                 // auth success/failure
                 if (err && !(password === element.password && name === element.name))
                     socket.emit('Try again');
                 else {
                     socket.auth = true;
-                    socket.emit('authenticated')
+                    socket.emit('authenticated', element.name)
                     console.log("Authenticated socket ", socket.id);
                 }
             })
@@ -84,6 +84,7 @@ io.on('connection', (socket) => {
 
     socket.on('pseudo', (user) => {
         user = ent.encode(user);
+        console.log(user)
         socket.user = user
         socket.broadcast.emit('pseudo', ` Connection de : ${socket.user}`)
 

@@ -2,18 +2,16 @@
     'use strict'
     app.component('chat', {
         templateUrl: 'js/components/chat/chat.html',
-        controller: ['$state', function($state) {
+        controller: ['$state','$stateParams', function($state, $stateParams) {
             angular.extend(this, {
                 $onInit() {
 
                     let socket = io();
-
+                    let pseudo = $stateParams.pseudo
 
                     // use the socket
-                    socket.on('pseudo', (info) => {
-                        this.pseudo = info
+                    socket.emit('pseudo', $stateParams.pseudo )
 
-                    })
 
                     // Affiche celui qui vient de se copnnecter
                     socket.on('an event', (test) => {
@@ -23,7 +21,7 @@
                     this.submit = () => {
                         let msg = this.envoie
                         socket.emit('chat message', msg);
-                        // this.message(msg)
+                         this.message(msg, pseudo)
 
                     };
 
